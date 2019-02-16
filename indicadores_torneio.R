@@ -104,4 +104,112 @@ CMO = (Psum - Nsum / (Psum + Nsum)) * 100
 
 
 # Pagina 14
-DPO = QQQ$QQQ.Close [ round( N/2 +1 ) ] - ma(QQQ$QQQ.Close , N)
+
+DPO = c()
+sma_close = sma(QQQ$QQQ.Close,N) %>% na.omit()
+
+for (k in 7:length(QQQ$QQQ.Close)) {
+  DPO[k] <- QQQ$QQQ.Close [ k - round( N/2 + 1 ) ] - sma_close[k-6]
+}
+
+PDM = diff(QQQ$QQQ.High)
+NDM = c()
+ for(i in 1: (length(QQQ$QQQ.Low) - 1) )  {
+   NDM[i] = as.numeric( QQQ$QQQ.Low[i] ) - as.numeric( QQQ$QQQ.Low[i+1] )
+ }
+
+WPDM = c(NA,NA)
+
+ for (i in 3:length(PDM) ){
+   WPDM[i] = PDM[i-1] - mean(PDM[1:i-1],na.rm=TRUE) + as.numeric( PDM[i] )
+ }
+
+WNDM = c(NA,NA)
+
+for (i in 3:length(PDM) ){
+  WNDM[i] = NDM[i-1] - mean(NDM[1:i-1],na.rm=TRUE) + as.numeric( NDM[i] )
+}
+
+WTR = c(NA,NA)
+  for (i in 3:length(TR)){
+    WTR[i] = TR[i-1] - mean(TR[1:i-1],na.rm=TRUE) + as.numeric( TR[i] )
+  }
+
+PDI = ( WPDM / WTR ) * 100
+NDI = ( WNDM / WTR ) * 100
+DD = abs(PDI - NDI)
+DMI = ( DD / (PDI + NDI)  ) * 100
+
+
+Donchian = DonchianChannel(QQQ[,2:3])
+
+
+DEMA = 2 * ( TTR::EMA(QQQ$QQQ.Close , N) - TTR::EMA( TTR::EMA(QQQ$QQQ.Close, N ), N   )  )
+
+minimos = c()
+maximos = c()
+  for (i in 1:length(QQQ$QQQ.Low)) { 
+    minimos[i] = min(QQQ$QQQ.Low[1:i])
+    maximos[i] = max(QQQ$QQQ.High[1:i])
+  }
+
+close_menos_min = c()
+high_menos_min = c()
+
+  for ( i in 1:length(QQQ$QQQ.Low)){
+    close_menos_min[i] = QQQ$QQQ.Close[i] - minimos[i]
+    high_menos_min[i]  = maximos[i] - minimos[i]
+  }
+
+DSS = (TTR::EMA( TTR::EMA( close_menos_min)  ) / TTR::EMA( TTR::EMA( high_menos_min) ) ) * 100
+
+high = QQQ$QQQ.High
+low  = QQQ$QQQ.Low
+volume = QQQ$QQQ.Volume
+close = QQQ$QQQ.Close
+
+hl_tm1 = NA
+for (i in 2:length(high)) hl_tm1[i] = high[i-1] + low[i-1]
+  
+prov = ((high - low)/2 - hl_tm1/2 )  /  ((volume/100000000) / (high-low))
+
+EMV = TTR::SMA(prov,n = 14)  
+
+## EMA???
+
+wma_close = TTR::WMA( close[i] )
+
+FORCE = TTR::EMA(diff(close)*volume)
+
+
+HMA = WMA() ## nao entendi
+
+## Pagina 18 
+n1 = 10 ; nf = 2 ; ns = 30
+
+  for (i in 1:length(close)) {
+    abs1 = abs(close)
+  }
+ER = abs(diff(close,lag = n1)) / 
+
+KAMA ### Falta..
+
+KC_M = TTR::EMA( high + low + close / 3 , n = 20)  # no paper n1 = 20
+KC_L = KC_M - 2* ( ATR (QQQ[,2:4], n = 10)$atr ) # no paper n = 10. Quem é o X ???
+KC_U = KC_M + 2* ( ATR (QQQ[,2:4], n = 10)$atr ) 
+
+
+macd = MACD(volume)
+
+macdh = macd$macd - TTR::EMA(macd$macd, n=9)
+
+
+MAE_UP = SMA(close) + SMA(close)/4
+MAE_LOW = SMA(close) - SMA(close)/4
+
+high_menos_low = high - low
+prov2 = TTR::EMA( high_menos_low, n = 9) / (TTR::EMA( TTR::EMA( high_menos_low, n = 9), n = 9 ))
+
+MASS_ind = sum(prov2[1:25]) # ???? sum 1:25 ?????
+
+
