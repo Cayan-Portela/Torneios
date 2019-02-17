@@ -7,6 +7,11 @@ dados <- getSymbols('QQQ')
 
 
 fechamento <- QQQ$QQQ.Close
+close <- QQQ$QQQ.Close
+high <- QQQ$QQQ.High
+low <- QQQ$QQQ.Low
+open <- QQQ$QQQ.Open
+volume <- QQQ$QQQ.Volume
 
 N <- 10
 
@@ -114,15 +119,15 @@ for (k in 7:length(QQQ$QQQ.Close)) {
 
 PDM = diff(QQQ$QQQ.High)
 NDM = c()
- for(i in 1: (length(QQQ$QQQ.Low) - 1) )  {
-   NDM[i] = as.numeric( QQQ$QQQ.Low[i] ) - as.numeric( QQQ$QQQ.Low[i+1] )
- }
+for(i in 1: (length(QQQ$QQQ.Low) - 1) )  {
+  NDM[i] = as.numeric( QQQ$QQQ.Low[i] ) - as.numeric( QQQ$QQQ.Low[i+1] )
+}
 
 WPDM = c(NA,NA)
 
- for (i in 3:length(PDM) ){
-   WPDM[i] = PDM[i-1] - mean(PDM[1:i-1],na.rm=TRUE) + as.numeric( PDM[i] )
- }
+for (i in 3:length(PDM) ){
+  WPDM[i] = PDM[i-1] - mean(PDM[1:i-1],na.rm=TRUE) + as.numeric( PDM[i] )
+}
 
 WNDM = c(NA,NA)
 
@@ -131,9 +136,9 @@ for (i in 3:length(PDM) ){
 }
 
 WTR = c(NA,NA)
-  for (i in 3:length(TR)){
-    WTR[i] = TR[i-1] - mean(TR[1:i-1],na.rm=TRUE) + as.numeric( TR[i] )
-  }
+for (i in 3:length(TR)){
+  WTR[i] = TR[i-1] - mean(TR[1:i-1],na.rm=TRUE) + as.numeric( TR[i] )
+}
 
 PDI = ( WPDM / WTR ) * 100
 NDI = ( WNDM / WTR ) * 100
@@ -148,18 +153,18 @@ DEMA = 2 * ( TTR::EMA(QQQ$QQQ.Close , N) - TTR::EMA( TTR::EMA(QQQ$QQQ.Close, N )
 
 minimos = c()
 maximos = c()
-  for (i in 1:length(QQQ$QQQ.Low)) { 
-    minimos[i] = min(QQQ$QQQ.Low[1:i])
-    maximos[i] = max(QQQ$QQQ.High[1:i])
-  }
+for (i in 1:length(QQQ$QQQ.Low)) { 
+  minimos[i] = min(QQQ$QQQ.Low[1:i])
+  maximos[i] = max(QQQ$QQQ.High[1:i])
+}
 
 close_menos_min = c()
 high_menos_min = c()
 
-  for ( i in 1:length(QQQ$QQQ.Low)){
-    close_menos_min[i] = QQQ$QQQ.Close[i] - minimos[i]
-    high_menos_min[i]  = maximos[i] - minimos[i]
-  }
+for ( i in 1:length(QQQ$QQQ.Low)){
+  close_menos_min[i] = QQQ$QQQ.Close[i] - minimos[i]
+  high_menos_min[i]  = maximos[i] - minimos[i]
+}
 
 DSS = (TTR::EMA( TTR::EMA( close_menos_min)  ) / TTR::EMA( TTR::EMA( high_menos_min) ) ) * 100
 
@@ -170,7 +175,7 @@ close = QQQ$QQQ.Close
 
 hl_tm1 = NA
 for (i in 2:length(high)) hl_tm1[i] = high[i-1] + low[i-1]
-  
+
 prov = ((high - low)/2 - hl_tm1/2 )  /  ((volume/100000000) / (high-low))
 
 EMV = TTR::SMA(prov,n = 14)  
@@ -187,15 +192,15 @@ HMA = WMA() ## nao entendi
 ## Pagina 18 
 n1 = 10 ; nf = 2 ; ns = 30
 
-  for (i in 1:length(close)) {
-    abs1 = abs(close)
-  }
+for (i in 1:length(close)) {
+  abs1 = abs(close)
+}
 ER = abs(diff(close,lag = n1)) / 
-
-KAMA ### Falta..
+  
+  KAMA ### Falta..
 
 KC_M = TTR::EMA( high + low + close / 3 , n = 20)  # no paper n1 = 20
-KC_L = KC_M - 2* ( ATR (QQQ[,2:4], n = 10)$atr ) # no paper n = 10. Quem Ã© o X ???
+KC_L = KC_M - 2* ( ATR (QQQ[,2:4], n = 10)$atr ) # no paper n = 10. Quem é o X ???
 KC_U = KC_M + 2* ( ATR (QQQ[,2:4], n = 10)$atr ) 
 
 
@@ -211,5 +216,395 @@ high_menos_low = high - low
 prov2 = TTR::EMA( high_menos_low, n = 9) / (TTR::EMA( TTR::EMA( high_menos_low, n = 9), n = 9 ))
 
 MASS_ind = sum(prov2[1:25]) # ???? sum 1:25 ?????
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+# BORIS PAROU AQUI
+#############################
+roc <- function(close, n){
+  res <- close
+  for (i in (n+1):length(res)){
+    res[i] <- (as.numeric(close[i]))/(as.numeric(close[i-n]))*100
+  }
+  res[1:n] <- NA
+  return(res)
+}
+
+ROC <- roc(close, n = 10)
+#############################
+RSI <- RSI(close, n = 10, maType = TTR::SMA)
+#############################
+rvi <- FALTA
+#############################
+SMA <- SMA(close, n = 10)
+#############################
+volat <- function(close, n){
+  res <- close
+  for (i in (n):length(res)){
+    res[i] <- (sd(close[(i-n+1):i]))
+  }
+  res[1:(n-1)] <- NA
+  return(res)
+}
+
+VOLAT <- volat(close, n = 10)
+#############################
+sd do mqo <- FALTA
+#############################
+stochrsi <- function(close, n){
+  prov <- RSI(close, n = 10, maType = TTR::SMA)
+  res <- close
+  res[1:n] <- NA
+  for (i in (n+1):length(res)){
+    res[i] <- (prov[i] - min(prov[(i-n):(i-1)]))/(max(prov[(i-n):(i-1)]) - min(prov[(i-n):(i-1)]))
+  }
+  return(res)
+}
+
+STRSI <- stochrsi(close, n = 10)
+#############################
+STOCH_K<- stoch(close, nFastK = 10, nSlowD = 3, nFastD = 3)[,1]
+#############################
+STOCH_D<- stoch(close, nFastK = 10, nSlowD = 3, nFastD = 3)[,2]
+#############################
+STOCH_D_SLOW<- stoch(close, nFastK = 10, nSlowD = 3, nFastD = 3)[,3]
+#############################
+TEMA <- (3*EMA(close, n = 10)) - 
+  (3*EMA(EMA(close, n = 10), n = 10)) + 
+  (3*EMA(EMA(EMA(close, n = 10), n = 10), n = 10))
+#############################
+TRIMA <- SMA(close, n = round((10+1)/2))
+#############################
+TRIX <- TRIX(close, n = 15, maType = TTR::EMA)[,1]
+#############################
+TSI <- (EMA(EMA(diff(close),n = 25),n = 13))/(EMA(EMA(abs(diff(close)),n = 25),n = 13))
+#############################
+TP <- (high + low + close)/3
+#############################
+ulcer <- function(close, n){
+  prov <- close
+  prov[1:n] <- NA
+  for (i in (n+1):length(prov)){
+    prov[i] <- (as.numeric(close[i]) - as.numeric(max(close[(i-n+1):i])))/
+      as.numeric(max(close[(i-n+1):i])) * 100
+  }
+  res <- sqrt(SMA(prov^2,n))
+  return(res)
+}
+
+ULCER <- ulcer(close, n = 14)
+#############################
+ULTOSC <- ultimateOscillator(QQQ[,2:4], n = c(7,14,28), wts = c(4,2,1))
+#############################
+vama <- function(close, volume, n){
+  avol <- SMA(volume, n)
+  prov <- (3*volume)/(2*avol)*close
+  return(SMA(prov, n))
+}
+
+VAMA <- vama(close, volume, n = 10)
+#############################
+vol_osc <- function(volume, n_fast, n_slow){
+  return((SMA(volume, n_fast) - SMA(volume, n_slow))/SMA(volume, n_slow)*100)
+}
+
+VOOSC <- vol_osc(volume, n_fast = 14, n_slow = 28)
+#############################
+vpt <- function(volume, close){
+  res <- volume
+  res[1] <- 0
+  for (i in 2:length(res)){
+    res[i] <- as.numeric(res[i-1]) + as.numeric(volume[i])*
+      ((as.numeric(close[i]) - as.numeric(close[i-1]))/as.numeric(close[i-1]))
+  }
+  res[1] <- NA
+  return(res)
+}
+
+VPT <- vpt(volume, close)
+#############################
+vortex <- FALTA
+#############################
+WILL_R <- WPR(QQQ[,2:4],n = 10)
+#############################
+WMA <- WMA(close, n = 10, wts = 1:10)
+#############################
+wws <- function(close,n){
+  res <- close
+  res[1:(n-1)] <- NA
+  res[n] <- SMA(close, n)[n]
+  for (i in (n+1):length(res)){
+    res[i] <- as.numeric(res[(i-1)]) + (close[i] - as.numeric(res[(i-1)]))/n
+  }
+  return(res)
+}
+
+WWS <- wws(close, n = 10)
+#############################
+
+
+#############################
+#############################
+#############################
+#############################
+#############################
+########### BORIS ###########
+#############################
+#############################
+#############################
+#############################
+#############################
+
+#############################
+DISP <- fechamento/(SMA(x = fechamento, n = 9))
+#############################
+n_fast <- 12
+n_slow <- 24
+
+OSCP <- (SMA(x = fechamento, n = n_fast)-SMA(x = fechamento, n = n_slow))/SMA(x = fechamento, n = n_fast)
+#############################
+indic_up <- function(x,n){
+  indic <- x
+  for (i in 2:length(indic)){
+    indic[i] <- sign(as.numeric(x[i])-as.numeric(x[i-1]))
+  }
+  indic[1] <- NA
+  
+  res <- x
+  for (i in (n+1):length(res)){
+    res[i] <- length(which(indic[(i-n+1):(i)]=="1"))
+  }
+  res[1:n] <- NA
+  
+  return(res)
+}
+indic_up(fechamento,n = 3)
+
+PSY <- function(x,n){
+  return((indic_up(x,n))/n*100)
+}
+
+PSY <- PSY(fechamento,n = 10)
+#############################
+DIU <- function(close,high,low,n){
+  
+  numm <- close
+  for (i in (n+1):length(close)){
+    numm[i] <- sum(diff(high)[(i-n+1):i])
+  }
+  numm[1:n] <- NA
+  
+  prov <- cbind(as.numeric(high - low),
+                c(NA,as.numeric(high[-1]) - as.numeric(fechamento[-length(fechamento)])),
+                c(NA,as.numeric(as.numeric(fechamento[-length(fechamento)]) - low[-1])))
+  
+  prov2 <- as.xts(apply(prov,1,max),order.by = index(close))
+  
+  res <- numm/prov2
+  return(res*100)
+}
+
+DIU <- DIU(close, high, low, n=10)
+#############################
+DID <- function(close,high,low,n){
+  
+  numm <- close
+  for (i in (n+1):length(close)){
+    numm[i] <- sum(diff(low)[(i-n+1):i])
+  }
+  numm[1:n] <- NA
+  
+  prov <- cbind(as.numeric(high - low),
+                c(NA,as.numeric(high[-1]) - as.numeric(fechamento[-length(fechamento)])),
+                c(NA,as.numeric(as.numeric(fechamento[-length(fechamento)]) - low[-1])))
+  
+  prov2 <- as.xts(apply(prov,1,max),order.by = index(close))
+  
+  res <- numm/prov2
+  return(res*100)
+}
+
+DID <- DID(close, high, low, n=10)
+#############################
+BIAS <- (close - SMA(close,n=5))/SMA(close,n=5)*100
+#############################
+vol_ratio <- function(close,volume,n){
+  indic <- close
+  for (i in 2:length(indic)){
+    indic[i] <- sign(as.numeric(close[i])-as.numeric(close[i-1]))
+  }
+  indic[1] <- NA
+  
+  res1 <- vector(mode = "numeric",length = length(close))
+  for (i in 2:length(res1)){
+    if (indic[i]>0){
+      res1[i] <- volume[i]
+    }
+    else{
+      res1[i] <- 0
+    }
+  }
+  res1[1] <- NA
+  
+  res2 <- vector(mode = "numeric",length = length(close))
+  for (i in 2:length(res2)){
+    if (indic[i]<=0){
+      res2[i] <- volume[i]
+    }
+    else{
+      res2[i] <- 0
+    }
+  }
+  res2[1] <- NA
+  
+  res <- close
+  
+  for (i in (n+1):length(close)){
+    if (as.numeric(sum(res2[(i-n+1):i]) - sum(volume[(i-n+1):i])) == 0){
+      res[i] <- 0
+    }
+    else{
+      res[i] <- as.numeric((sum(res1[(i-n+1):i]) - sum(volume[(i-n+1):i])))/
+        as.numeric(sum(res2[(i-n+1):i]) - sum(volume[(i-n+1):i]))
+    }
+  }
+  res[1:n] <- NA
+  
+  return(res)
+}
+
+VOLR <- vol_ratio(close,volume,n = 3)
+#############################
+a_ratio <- function(open, high, low, n){
+  prov1 <- high-open
+  prov2 <- open-low
+  
+  res <- low
+  for (i in (n):length(res)){
+    res[i] <- (sum(prov1[(i-n+1):i]))/(sum(prov2[(i-n+1):i]))
+  }
+  res[1:(n-1)] <- NA
+  
+  return(res)
+}
+
+ARATIO <- a_ratio(open, high, low, n = 10)
+#############################
+b_ratio <- function(close, high, low, n){
+  prov1 <- high-close
+  prov2 <- close-low
+  
+  res <- close
+  for (i in (n):length(res)){
+    res[i] <- (sum(prov1[(i-n+1):i]))/(sum(prov2[(i-n+1):i]))
+  }
+  res[1:(n-1)] <- NA
+  
+  return(res)
+}
+
+BRATIO <- b_ratio(close, high, low, n = 10)
+#############################
+REX <- SMA(3*close - (low + open + high), n=20)
+#############################
+hpr <- function(close,n){
+  res <- close
+  for (i in n:length(close)){
+    res[i] <- res[i]/max(close[(i-n+1):i])
+  }
+  res[1:(n-1)] <- NA
+  return(res)
+}
+
+HPR <- hpr(close,n=10)
+#############################
+lpr <- function(close,n){
+  res <- close
+  for (i in n:length(close)){
+    res[i] <- min(close[(i-n+1):i])/res[i]
+  }
+  res[1:(n-1)] <- NA
+  return(res)
+}
+
+LPR <- lpr(close,n=10)
+#############################
+vmom <- function(volume,n){
+  res <- volume
+  for (i in (n+1):length(res)){
+    res[i] <- as.numeric(volume[i])-as.numeric(volume[i-n])
+  }
+  res[1:n] <- NA
+  return(res)
+}
+VMOM <- vmom(volume, n = 10)
+#############################
+mpp <- function(close, n){
+  res <- close
+  for (i in n:length(close)){
+    res[i] <- (close[i] - min(close[(i-n+1):i]))/(max(close[(i-n+1):i]) - min(close[(i-n+1):i]))
+  }
+  res[1:(n-1)] <- NA
+  return(res)
+}
+
+MPP <- mpp(close, n = 10)
+#############################
+var_ratio <- function(close, n){
+  res <- close
+  for (i in (2*n):length(res)){
+    res[i] <- ((sd(close[(i-n+1):i]))^2)/((sd(close[(i-n-n+1):(i-n)]))^2)
+  }
+  res[1:(2*n-1)] <- NA
+  return(res)
+}
+VARR <- var_ratio(close, n = 10)
+#############################
+#############################
+#############################
+#############################
+#############################
+#############################
+
+#############################
+
+#############################
+
+#############################
+
+#############################
+
+#############################
+
+#############################
 
 
