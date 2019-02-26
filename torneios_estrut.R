@@ -856,13 +856,13 @@ BASIS <- cbind(AB_UP,AB_DOWN, AD, MFM, ADL, CHOSC, ADO, APO, AR_POS, AR_NEG, AR_
 
 
 
-colnames(BASIS) <- c("AB_UP","AB_DOWN"," AD"," MFM"," ADL"," CHOSC"," ADO"," APO"," AR_POS"," AR_NEG"," AR_OSC"," ATR"," ATRP"," AVOL"," BB_UP"," BB_LOW"," BB_BW"," BWW",
-                     "VOLAT"," PERC_B"," CCI"," CMF"," CVOL"," CMO"," MAXX"," MINN"," CHAND_LONG"," CHAND_SHORT"," ROC"," COPP"," DPO"," DMI"," DONCHIAN"," DEMA",
-                     "DSS"," EMV"," FORCE"," HULL"," KAMA"," KC_U"," KC_M"," KC_L"," MQO_ALPHA"," MQO_BETA"," MQO_PRED"," MQO_STD"," MACD"," MACDH",
-                     "MAE_UP"," MAE_LOW"," MASS"," RMF"," MFI"," MIDPOINT"," MIDPRICE"," MOM"," NVI"," NATR"," OBV"," SAR"," TP"," SS1"," SS2"," SR1"," SR2"," FS1",
-                     "FS2"," FR1"," FR2"," PD1"," DS1"," DR1"," PC_UP"," PC_DOWN"," CHOPPINESS"," PPO"," PPOH"," PVO"," PVOH"," PVI"," PVT"," KST"," PSK"," RSI"," RVI",
-                     "SMA"," STRSI"," STOCH_D"," STOCH_K"," STOCH_D_SLOW"," TEMA"," TRIMA"," TRIX"," TSI"," ULCER"," ULTOSC"," VAMA"," VWAP"," VOOSC"," VPT",
-                     "PVOI"," NVOI"," WILL_R"," WMA"," WWS"," DISP"," OSCP"," PSY"," DIU"," DID"," BIAS"," VOLR"," ARATIO"," BRATIO"," REX"," HPR"," LPR"," VMOM"," MPP"," VARR","YYY")
+colnames(BASIS) <- c("AB_UP","AB_DOWN","AD","MFM","ADL","CHOSC","ADO","APO","AR_POS","AR_NEG","AR_OSC","ATR","ATRP","AVOL","BB_UP","BB_LOW","BB_BW","BWW",
+                     "VOLAT","PERC_B","CCI","CMF","CVOL","CMO","MAXX","MINN","CHAND_LONG","CHAND_SHORT","ROC","COPP","DPO","DMI","DONCHIAN","DEMA",
+                     "DSS","EMV","FORCE","HULL","KAMA","KC_U","KC_M","KC_L","MQO_ALPHA","MQO_BETA","MQO_PRED","MQO_STD","MACD","MACDH",
+                     "MAE_UP","MAE_LOW","MASS","RMF","MFI","MIDPOINT","MIDPRICE","MOM","NVI","NATR","OBV","SAR","TP","SS1","SS2","SR1","SR2","FS1",
+                     "FS2","FR1","FR2","PD1","DS1","DR1","PC_UP","PC_DOWN","CHOPPINESS","PPO","PPOH","PVO","PVOH","PVI","PVT","KST","PSK","RSI","RVI",
+                     "SMA","STRSI","STOCH_D","STOCH_K","STOCH_D_SLOW","TEMA","TRIMA","TRIX","TSI","ULCER","ULTOSC","VAMA","VWAP","VOOSC","VPT",
+                     "PVOI","NVOI","WILL_R","WMA","WWS","DISP","OSCP","PSY","DIU","DID","BIAS","VOLR","ARATIO","BRATIO","REX","HPR","LPR","VMOM","MPP","VARR","YYY")
 
 
 
