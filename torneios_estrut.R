@@ -6,7 +6,14 @@ library(quantmod)
 library(QuantTools)
 library(TTR)
 
-# vec <- c("OEX","AAPL","AIG") ## vetor com empresas
+# vec <- c("AAPL","ABBV","ABT","ACN","AGN","AIG","ALL","AMGN","AMZN","AXP","BA","BAC","BIIB",
+# "BK","BKNG","BLK","BMY","BRK.B","C","CAT","CELG","CHTR","CL","CMCSA","COF","COP",
+# "COST","CSCO","CVS","CVX","DHR","DIS","DUK","DWDP","EMR","EXC","F","FB","FDX","FOX",
+# "FOXA","GD","GE","GILD","GM","GOOG","GOOGL","GS","HAL","HD","HON","IBM","INTC",
+# "JNJ","JPM","KHC","KMI","KO","LLY","LMT","LOW","MA","MCD","MDLZ","MDT","MET","MMM",
+# "MO","MRK","MS","MSFT","NEE","NFLX","NKE","NVDA","ORCL","OXY","PEP","PFE","PG",
+# "PM","PYPL","QCOM","RTN","SBUX","SLB","SO","SPG","T","TGT","TXN","UNH","UNP","UPS",
+# "USB","UTX","V","VZ","WBA","WFC","WMT","XOM") ## vetor com empresas
 # 
 # BAIXA DADOS PARA CADA EMPRESA LISTADA
 # for (esse in 1:length(vec)){
@@ -48,6 +55,8 @@ ADL <- 0
 for ( i in 2:dim(QQQ)[1] ) { ADL[i] <- ADL[i-1] + MFV[i]}
 
 ADL <- as.xts(ADL,order.by = index(close))
+#############################
+ADX <- TTR::ADX(HLC = QQQ[,2:4], n = 14)[,4]
 #############################
 CHOSC <- TTR::EMA(ADL, n = 3) - TTR::EMA(ADL, n = 10)
 #############################
@@ -846,7 +855,7 @@ VARR <- var_ratio(close, n = 10)
 #############################
 
 
-BASIS <- cbind(AB_UP,AB_DOWN, AD, MFM, ADL, CHOSC, ADO, APO, AR_POS, AR_NEG, AR_OSC, ATR, ATRP, AVOL, BB_UP, BB_LOW, BB_BW, BWW,
+BASIS <- cbind(AB_UP,AB_DOWN, AD, MFM, ADL, ADX, CHOSC, ADO, APO, AR_POS, AR_NEG, AR_OSC, ATR, ATRP, AVOL, BB_UP, BB_LOW, BB_BW, BWW,
                VOLAT, PERC_B, CCI, CMF, CVOL, CMO, MAXX, MINN, CHAND_LONG, CHAND_SHORT, ROC, COPP, DPO, DMI, DONCHIAN, DEMA,
                DSS, EMV, FORCE, HULL, KAMA, KC_U, KC_M, KC_L, MQO_ALPHA, MQO_BETA, MQO_PRED, MQO_STD, MACD, MACDH,
                MAE_UP, MAE_LOW, MASS, RMF, MFI, MIDPOINT, MIDPRICE, MOM, NVI, NATR, OBV, SAR, TP, SS1, SS2, SR1, SR2, FS1,
@@ -856,7 +865,7 @@ BASIS <- cbind(AB_UP,AB_DOWN, AD, MFM, ADL, CHOSC, ADO, APO, AR_POS, AR_NEG, AR_
 
 
 
-colnames(BASIS) <- c("AB_UP","AB_DOWN","AD","MFM","ADL","CHOSC","ADO","APO","AR_POS","AR_NEG","AR_OSC","ATR","ATRP","AVOL","BB_UP","BB_LOW","BB_BW","BWW",
+colnames(BASIS) <- c("AB_UP","AB_DOWN","AD","MFM","ADL","ADX","CHOSC","ADO","APO","AR_POS","AR_NEG","AR_OSC","ATR","ATRP","AVOL","BB_UP","BB_LOW","BB_BW","BWW",
                      "VOLAT","PERC_B","CCI","CMF","CVOL","CMO","MAXX","MINN","CHAND_LONG","CHAND_SHORT","ROC","COPP","DPO","DMI","DONCHIAN","DEMA",
                      "DSS","EMV","FORCE","HULL","KAMA","KC_U","KC_M","KC_L","MQO_ALPHA","MQO_BETA","MQO_PRED","MQO_STD","MACD","MACDH",
                      "MAE_UP","MAE_LOW","MASS","RMF","MFI","MIDPOINT","MIDPRICE","MOM","NVI","NATR","OBV","SAR","TP","SS1","SS2","SR1","SR2","FS1",
