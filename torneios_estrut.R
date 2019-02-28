@@ -6,23 +6,27 @@ library(quantmod)
 library(QuantTools)
 library(TTR)
 
-# vec <- c("AAPL","ABBV","ABT","ACN","AGN","AIG","ALL","AMGN","AMZN","AXP","BA","BAC","BIIB",
-# "BK","BKNG","BLK","BMY","BRK.B","C","CAT","CELG","CHTR","CL","CMCSA","COF","COP",
-# "COST","CSCO","CVS","CVX","DHR","DIS","DUK","DWDP","EMR","EXC","F","FB","FDX","FOX",
-# "FOXA","GD","GE","GILD","GM","GOOG","GOOGL","GS","HAL","HD","HON","IBM","INTC",
-# "JNJ","JPM","KHC","KMI","KO","LLY","LMT","LOW","MA","MCD","MDLZ","MDT","MET","MMM",
-# "MO","MRK","MS","MSFT","NEE","NFLX","NKE","NVDA","ORCL","OXY","PEP","PFE","PG",
-# "PM","PYPL","QCOM","RTN","SBUX","SLB","SO","SPG","T","TGT","TXN","UNH","UNP","UPS",
-# "USB","UTX","V","VZ","WBA","WFC","WMT","XOM") ## vetor com empresas
-# 
-# BAIXA DADOS PARA CADA EMPRESA LISTADA
-# for (esse in 1:length(vec)){
-# dados <- getSymbols(as.character(vec[esse]),from = '2000-01-01',to = '2019-01-31') 
-# QQQ <- get(as.character(vec[esse]))
-# }
+vec <- c("AAPL","ABBV","ABT","ACN","AGN","AIG","ALL","AMGN","AMZN","AXP","BA","BAC","BIIB",
+"BK","BKNG","BLK","BMY",#"BRK.B",
+"C","CAT","CELG","CHTR","CL","CMCSA","COF","COP",
+"COST","CSCO","CVS","CVX","DHR","DIS","DUK","DWDP","EMR","EXC","F","FB","FDX","FOX",
+"FOXA","GD","GE","GILD","GM","GOOG","GOOGL","GS","HAL","HD","HON","IBM","INTC",
+"JNJ","JPM","KHC","KMI","KO","LLY","LMT","LOW","MA","MCD","MDLZ","MDT","MET","MMM",
+"MO","MRK","MS","MSFT","NEE","NFLX","NKE","NVDA","ORCL","OXY","PEP","PFE","PG",
+"PM","PYPL","QCOM","RTN","SBUX","SLB","SO","SPG","T","TGT","TXN","UNH","UNP","UPS",
+"USB","UTX","V","VZ","WBA","WFC","WMT","XOM") ## vetor com empresas
 
-dados <- getSymbols('AAPL',from = '2000-01-01',to = '2019-01-31') 
-QQQ <- AAPL
+#BAIXA DADOS PARA CADA EMPRESA LISTADA # travou no 18
+for (esse in 1:length(vec)){
+dados <- getSymbols(as.character(vec[esse]),from = '2000-01-01',to = '2019-01-31')
+QQQ <- get(as.character(vec[esse]))
+}
+
+#dados <- getSymbols('AAPL',from = '2000-01-01',to = '2019-01-31') 
+lista <- list()
+
+for (j in 44:length(vec)){ #vec[13, 21, 43] deu erro
+QQQ <- get(vec[j])
 
 fechamento <- QQQ[,4]
 close <- QQQ[,4]
@@ -55,6 +59,7 @@ ADL <- 0
 for ( i in 2:dim(QQQ)[1] ) { ADL[i] <- ADL[i-1] + MFV[i]}
 
 ADL <- as.xts(ADL,order.by = index(close))
+
 #############################
 ADX <- TTR::ADX(HLC = QQQ[,2:4], n = 14)[,4]
 #############################
@@ -390,13 +395,13 @@ FR2 <- TP + (0.618 * (high - low))
 ddd <- close
 for (i in 1:length(ddd)){
   if (close[i] == open[i]){
-    ddd[i] <- high + low + 2*close
+    ddd[i] <- high[i] + low[i] + 2*close[i]
   }
   else if (close[i] > open[i]){
-    ddd[i] <- 2*high + low + close
+    ddd[i] <- 2*high[i] + low[i] + close[i]
   }
   else{
-    ddd[i] <- high + 2*low + close
+    ddd[i] <- high[i] + 2*low[i] + close[i]
   }
 }
 
@@ -873,6 +878,8 @@ colnames(BASIS) <- c("AB_UP","AB_DOWN","AD","MFM","ADL","ADX","CHOSC","ADO","APO
                      "SMA","STRSI","STOCH_D","STOCH_K","STOCH_D_SLOW","TEMA","TRIMA","TRIX","TSI","ULCER","ULTOSC","VAMA","VWAP","VOOSC","VPT",
                      "PVOI","NVOI","WILL_R","WMA","WWS","DISP","OSCP","PSY","DIU","DID","BIAS","VOLR","ARATIO","BRATIO","REX","HPR","LPR","VMOM","MPP","VARR","YYY")
 
-
+  lista[[j-1]] <- BASIS %>% na.omit()
+  print(j)
+}
 
 
