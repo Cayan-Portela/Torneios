@@ -20,14 +20,14 @@ vec <- c("AAPL","ABBV","ABT","ACN","AGN","AIG","ALL","AMGN","AMZN","AXP","BA","B
 
 #BAIXA DADOS PARA CADA EMPRESA LISTADA # travou no 18
 for (esse in 1:length(vec)){
-dados <- getSymbols(as.character(vec[esse]),from = '2000-01-01',to = '2019-01-31')
+dados <- getSymbols(as.character(vec[esse]),from = '2008-01-01',to = '2019-01-31')
 QQQ <- get(as.character(vec[esse]))
 }
 
 #dados <- getSymbols('AAPL',from = '2000-01-01',to = '2019-01-31') 
 lista <- list()
 
-for (j in 44:length(vec)){ #vec[13, 21, 43] deu erro
+for (j in 1:length(vec)){ #vec[13, 21, 43] deu erro
 QQQ <- get(vec[j])
 
 fechamento <- QQQ[,4]
@@ -880,8 +880,12 @@ colnames(BASIS) <- c("AB_UP","AB_DOWN","AD","MFM","ADL","ADX","CHOSC","ADO","APO
                      "SMA","STRSI","STOCH_D","STOCH_K","STOCH_D_SLOW","TEMA","TRIMA","TRIX","TSI","ULCER","ULTOSC","VAMA","VWAP","VOOSC","VPT",
                      "PVOI","NVOI","WILL_R","WMA","WWS","DISP","OSCP","PSY","DIU","DID","BIAS","VOLR","ARATIO","BRATIO","REX","HPR","LPR","VMOM","MPP","VARR","YYY")
 
-  lista[[j-1]] <- BASIS %>% na.omit()
+  lista[[j]] <- BASIS %>% na.omit()
   print(j)
+  write.csv2(BASIS, file = paste0(vec[j],".csv"))
 }
 
+base_completa <- do.call( rbind, lista )
 
+save(base_completa, file = "basecompleta.RData")
+write.csv2(base_completa, file = "basecompleta.csv")
