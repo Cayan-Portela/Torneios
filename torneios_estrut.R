@@ -887,5 +887,8 @@ colnames(BASIS) <- c("AB_UP","AB_DOWN","AD","MFM","ADL","ADX","CHOSC","ADO","APO
 
 base_completa <- do.call( rbind, lista )
 
-save(base_completa, file = "basecompleta.RData")
-write.csv2(base_completa, file = "basecompleta.csv")
+# Filtrando
+base_completa2 <- base_completa["2011/2019-01"]
+
+save(base_completa2, file = "basecompleta.RData")
+write.csv2(base_completa2, file = "basecompleta.csv")
